@@ -14,7 +14,7 @@ ARG NUM
 ARG PLATFORM
 ARG TARGETPLATFORM
 
-COPY files/ /expressvpn/
+COPY expressvpn/ /expressvpn/
 
 RUN apt update && apt install -y --no-install-recommends \
     expect curl ca-certificates iproute2 wget jq iptables iputils-ping
