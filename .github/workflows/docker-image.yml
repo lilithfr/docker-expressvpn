@@ -21,7 +21,7 @@ jobs:
         push: false
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-        build-args:
+        build-args: |
           DISTRIBUTION=bookworm
           NUM=3.68.0.2
           PLATFORM=amd64
