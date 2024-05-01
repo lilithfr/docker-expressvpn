@@ -28,7 +28,7 @@ RUN if [ "${TARGETARCH}" = "arm64" ]; then \
     && cd /lib && ln -s arm-linux-gnueabihf/ld-2.23.so ld-linux.so.3; \
     fi
 
-RUN if [ "${TARGETARCH}" = "amd64" ]; then ; \
+RUN if [ "${TARGETARCH}" = "amd64" ]; then \
       export EXPRESSVPN_ARCH=amd64 \
     else \
       export EXPRESSVPN_ARCH=armhf \
