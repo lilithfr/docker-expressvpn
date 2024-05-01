@@ -11,23 +11,23 @@ ENV PROTOCOL="lightway_udp"
 ENV CIPHER="chacha20"
 
 ARG NUM
-ARG PLATFORM
-ARG TARGETPLATFORM
+ARG TARGETARCH
+# ARG TARGETPLATFORM
 
 COPY expressvpn/ /expressvpn/
 
 RUN apt update && apt install -y --no-install-recommends \
     expect curl ca-certificates iproute2 wget jq iptables iputils-ping
 
-RUN if [ "${TARGETPLATFORM}" = "linux/arm64" ]; then \
+RUN if [ "${TARGETARCH}" = "arm64" ]; then \
     dpkg --add-architecture armhf \
     && apt update && apt install -y --no-install-recommends \
     libc6:armhf libstdc++6:armhf \
     && cd /lib && ln -s arm-linux-gnueabihf/ld-2.23.so ld-linux.so.3; \
     fi
 
-RUN wget -q https://www.expressvpn.works/clients/linux/expressvpn_${NUM}-1_${PLATFORM}.deb -O /expressvpn/expressvpn_${NUM}-1_${PLATFORM}.deb \
-    && dpkg -i /expressvpn/expressvpn_${NUM}-1_${PLATFORM}.deb \
+RUN wget -q https://www.expressvpn.works/clients/linux/expressvpn_${NUM}-1_${TARGETARCH}.deb -O /expressvpn/expressvpn_${NUM}-1_${TARGETARCH}.deb \
+    && dpkg -i /expressvpn/expressvpn_${NUM}-1_${TARGETARCH}.deb \
     && rm -rf /expressvpn/*.deb
 
 RUN apt-get purge --autoremove -y wget \
