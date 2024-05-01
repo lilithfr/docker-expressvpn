@@ -31,14 +31,12 @@ RUN if [ "${TARGETARCH}" = "arm64" ]; then \
 RUN <<EOT sh
     set -e
     if [ "amd64" = "$TARGETARCH" ]; then
-      export EXPRESSVPN_ARCH="amd64"
-      echo "Express VPM x86: ${EXPRESSVPN_ARCH}"
+      wget -q "https://www.expressvpn.works/clients/linux/expressvpn_${NUM}-1_amd64.deb" -O "/expressvpn/expressvpn_${NUM}-1_amd64.deb"
+      dpkg -i "/expressvpn/expressvpn_${NUM}-1_amd64.deb"
     else
-      export EXPRESSVPN_ARCH="armhf"
-      echo "Express VPM arm: ${EXPRESSVPN_ARCH}"
+      wget -q "https://www.expressvpn.works/clients/linux/expressvpn_${NUM}-1_armhf.deb" -O "/expressvpn/expressvpn_${NUM}-1_armhf.deb"
+      dpkg -i "/expressvpn/expressvpn_${NUM}-1_armhf.deb"
     fi
-    wget -q "https://www.expressvpn.works/clients/linux/expressvpn_${NUM}-1_${EXPRESSVPN_ARCH}.deb" -O "/expressvpn/expressvpn_${NUM}-1_${EXPRESSVPN_ARCH}.deb"
-    dpkg -i "/expressvpn/expressvpn_${NUM}-1_${EXPRESSVPN_ARCH}.deb"
     rm -rf /expressvpn/*.deb
 EOT
 
