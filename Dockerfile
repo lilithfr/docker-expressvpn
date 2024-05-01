@@ -18,6 +18,9 @@ COPY expressvpn/ /expressvpn/
 RUN apt update && apt install -y --no-install-recommends \
     expect curl ca-certificates iproute2 wget jq iptables iputils-ping
 
+# ExpressVPN Doesn't have arm64, only armhf (32b) or amd64.
+# On arm64, install the armhf package
+
 RUN if [ "${TARGETARCH}" = "arm64" ]; then \
     dpkg --add-architecture armhf \
     && apt update && apt install -y --no-install-recommends \
@@ -25,8 +28,13 @@ RUN if [ "${TARGETARCH}" = "arm64" ]; then \
     && cd /lib && ln -s arm-linux-gnueabihf/ld-2.23.so ld-linux.so.3; \
     fi
 
-RUN wget -q https://www.expressvpn.works/clients/linux/expressvpn_${NUM}-1_${TARGETARCH}.deb -O /expressvpn/expressvpn_${NUM}-1_${TARGETARCH}.deb \
-    && dpkg -i /expressvpn/expressvpn_${NUM}-1_${TARGETARCH}.deb \
+RUN if [ "${TARGETARCH}" = "amd64" ]; then ; \
+      export EXPRESSVPN_ARCH=amd64 \
+    else \
+      export EXPRESSVPN_ARCH=armhf \
+    fi \
+    wget -q https://www.expressvpn.works/clients/linux/expressvpn_${NUM}-1_${EXPRESSVPN_ARCH}.deb -O /expressvpn/expressvpn_${NUM}-1_${EXPRESSVPN_ARCH}.deb \
+    && dpkg -i /expressvpn/expressvpn_${NUM}-1_${EXPRESSVPN_ARCH}.deb \
     && rm -rf /expressvpn/*.deb
 
 RUN apt-get purge --autoremove -y wget \
