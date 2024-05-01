@@ -28,14 +28,25 @@ RUN if [ "${TARGETARCH}" = "arm64" ]; then \
     && cd /lib && ln -s arm-linux-gnueabihf/ld-2.23.so ld-linux.so.3; \
     fi
 
-RUN if [ "${TARGETARCH}" = "amd64" ]; then \
-      export EXPRESSVPN_ARCH="amd64" ; \
-    else \
-      export EXPRESSVPN_ARCH="armhf" ; \
-    fi \
+RUN <<EOT sh
+    if [ "amd64" = "$TARGETARCH" ]; then
+      export EXPRESSVPN_ARCH="amd64"
+    else
+      export EXPRESSVPN_ARCH="armhf"
+    fi
     wget -q https://www.expressvpn.works/clients/linux/expressvpn_${NUM}-1_${EXPRESSVPN_ARCH}.deb -O /expressvpn/expressvpn_${NUM}-1_${EXPRESSVPN_ARCH}.deb \
-    && dpkg -i /expressvpn/expressvpn_${NUM}-1_${EXPRESSVPN_ARCH}.deb \
-    && rm -rf /expressvpn/*.deb
+    dpkg -i /expressvpn/expressvpn_${NUM}-1_${EXPRESSVPN_ARCH}.deb \
+    rm -rf /expressvpn/*.deb
+EOT
+
+# RUN if [ "${TARGETARCH}" = "amd64" ]; then \
+#       export EXPRESSVPN_ARCH="amd64" ; \
+#     else \
+#       export EXPRESSVPN_ARCH="armhf" ; \
+#     fi \
+#     wget -q https://www.expressvpn.works/clients/linux/expressvpn_${NUM}-1_${EXPRESSVPN_ARCH}.deb -O /expressvpn/expressvpn_${NUM}-1_${EXPRESSVPN_ARCH}.deb \
+#     && dpkg -i /expressvpn/expressvpn_${NUM}-1_${EXPRESSVPN_ARCH}.deb \
+#     && rm -rf /expressvpn/*.deb
 
 RUN apt-get purge --autoremove -y wget \
     && rm -rf /var/lib/apt/lists/* \
