@@ -12,7 +12,6 @@ ENV CIPHER="chacha20"
 
 ARG NUM
 ARG TARGETARCH
-# ARG TARGETPLATFORM
 
 COPY expressvpn/ /expressvpn/
 
