@@ -29,9 +29,9 @@ RUN if [ "${TARGETARCH}" = "arm64" ]; then \
     fi
 
 RUN if [ "${TARGETARCH}" = "amd64" ]; then \
-      export EXPRESSVPN_ARCH=amd64 \
+      export EXPRESSVPN_ARCH="amd64" \
     else \
-      export EXPRESSVPN_ARCH=armhf \
+      export EXPRESSVPN_ARCH="armhf" \
     fi \
     wget -q https://www.expressvpn.works/clients/linux/expressvpn_${NUM}-1_${EXPRESSVPN_ARCH}.deb -O /expressvpn/expressvpn_${NUM}-1_${EXPRESSVPN_ARCH}.deb \
     && dpkg -i /expressvpn/expressvpn_${NUM}-1_${EXPRESSVPN_ARCH}.deb \
