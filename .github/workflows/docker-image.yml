@@ -25,4 +25,4 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
         build-args: |
           DISTRIBUTION=bookworm
-          NUM=3.68.0.2
+          NUM=3.76.0.4
